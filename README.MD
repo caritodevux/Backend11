@@ -47,8 +47,27 @@ python manage.py runserver
 http://127.0.0.1:8000/api/v1/productos/
 Debe salir: HTTP 200 OK
 
-## Prueba POST
+## Prueba POST sin autenticación
 Enviar datos a traves del formulario de la interfaz sin iniciar sesión.
+En el Terminal:
+```terminal
+curl -X POST http://127.0.0.1:8000/api/v1/productos/ -H "Content-Type: application/json" -d "{\"nombre\": \"Figura Goku\", \"categoria\": \"Figuras\", \"precio\": 24990, \"stock\": 8, \"activo\": true}"
+```
+```terminal
+curl.exe -X POST http://127.0.0.1:8000/api/v1/productos/ -H "Content-Type: application/json" -d "{\"nombre\": \"Figura Goku\", \"categoria\": \"Figuras\", \"precio\": 24990, \"stock\": 8, \"activo\": true}"
+```
+Entrega:
+```terminal
+Forbidden: /api/v1/productos/
+[02/Oct/2026 20:11:37] "POST /api/v1/productos/ HTTP/1.1" 403 58
+```
 
-## Acceder como admin
+## Prueba POST con autenticación
+Acceder como admin
 http://127.0.0.1:8000//api-auth/login/
+
+En http://127.0.0.1:8000/api/v1/productos/, se agrega un item:
+Si fue correcto, sale:
+"POST /api/v1/productos/ HTTP/1.1" 201 10483
+
+## Prueba PATCH y PUT (actualizar el recurso)
