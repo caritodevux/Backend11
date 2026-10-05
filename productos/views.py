@@ -7,3 +7,8 @@ class ProductoViewSet(viewsets.ModelViewSet):
     queryset = Producto.objects.all().order_by('id')
     serializer_class = ProductoSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
+
+#IsAuthenticatedOrReadOnly permite GET sin autenticación, 
+# pero exige identidad válida para POST, PUT, PATCH y 
+# DELETE. Esto separa autenticación de autorización y 
+# aplica el control en el servidor.

@@ -71,3 +71,57 @@ Si fue correcto, sale:
 "POST /api/v1/productos/ HTTP/1.1" 201 10483
 
 ## Prueba PATCH y PUT (actualizar el recurso)
+Vamos a http://127.0.0.1:8000/api/v1/productos/1/ y alteramos el stock a 
+12 con PATCH, en terminal aparece:
+```
+"PATCH /api/v1/productos/1/ HTTP/1.1" 200 11845
+```
+Y con PUT, probamos una actualización completa, en terminal:
+```
+"PUT /api/v1/productos/1/ HTTP/1.1" 200 11855
+```
+
+## Probar DELETE
+En /api/v1/productos/1/ En la parte superior derecha de la pantalla 
+(justo al lado del botón "GET"), verás un botón rojo que dice DELETE.
+```
+HTTP 404 Not Found
+Allow: GET, PUT, PATCH, DELETE, HEAD, OPTIONS
+Content-Type: application/json
+Vary: Accept
+
+{
+    "detail": "No Producto matches the given query."
+}
+```
+
+## Validar que el servidor no confía en el cliente
+- Volver a la ruta principal: http://127.0.0.1:8000/api/v1/productos/
+- Intento poner productos y precio negativos
+```
+IntegrityError at /api/v1/productos/
+CHECK constraint failed: precio
+```
+En terminal:
+```terminal
+"POST /api/v1/productos/ HTTP/1.1" 500 192770
+```
+
+## Analizar autenticación y autorización
+- Desloguear como admin
+- Recargar http://127.0.0.1:8000/api/v1/productos/
+En terminal:
+```terminal
+"GET /api/v1/productos/ HTTP/1.1" 200 5371
+```
+- Se ve la lista de productos, pero no puedo agregar nada.
+
+- Meterse a la mala usando curl, en temrinal:
+```
+curl -X POST http://127.0.0.1:8000/api/v1/productos/ \
+-H "Content-Type: application/json" \
+-d '{"nombre": "Prueba", "precio": 1000, "stock": 5}'
+```
+Aparece: curl: (6) Could not resolve host: curl
+{"detail":"Las credenciales de autenticación no se proveyeron."}% 
+
